@@ -30,7 +30,18 @@ Shiori 本体は依存関係として一緒に入ります。
 
 ### Package Manager（VCC を使わない場合）
 
-Package Manager は依存関係を自動では入れないので、本体を先に入れます。
+`Project Settings > Package Manager` の Scoped Registries に次を追加すると、Package Manager の「My Registries」から
+インストールと更新ができます。Unity 6.3 以降では署名済み（発行元 KakeyamaY）と表示されます。
+
+| 項目 | 値 |
+| --- | --- |
+| Name | `yaito3014` |
+| URL | `https://yaito3014.github.io/vpm-listing` |
+| Scope(s) | `com.yaito3014` |
+
+「My Registries」から **Shiori** と **Shiori for VRChat** の両方を入れてください（0.1.1 では本体が自動では入りません）。
+
+登録したくない場合は tarball から入れます。Package Manager は依存関係を自動では入れないので、本体を先に入れます。
 
 1. [Shiori の最新リリース](https://github.com/yaito3014/shiori/releases/latest)から `com.yaito3014.shiori-<version>.tgz`、
    [このリポジトリの最新リリース](https://github.com/yaito3014/shiori-vrchat/releases/latest)から
