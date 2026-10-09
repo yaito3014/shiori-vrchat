@@ -22,16 +22,22 @@ VCC / ALCOM で管理しているアバター・ワールドのプロジェク�
 
 ## インストール
 
+### VCC / ALCOM（おすすめ）
+
 [yaito3014.github.io/vpm-listing](https://yaito3014.github.io/vpm-listing/) の「VCC / ALCOM に追加」を押して
 リポジトリを登録し、プロジェクトの「Manage Project」から **Shiori for VRChat** を追加してください。
 Shiori 本体は依存関係として一緒に入ります。
 
-VCC を使わない場合は Package Manager の "Add package from git URL" で、Shiori 本体のあとにこのリポジトリを追加します。
+### Package Manager（VCC を使わない場合）
 
-```
-https://github.com/yaito3014/shiori.git#v0.1.1
-https://github.com/yaito3014/shiori-vrchat.git#v0.1.1
-```
+Package Manager は依存関係を自動では入れないので、本体を先に入れます。
+
+1. [Shiori の最新リリース](https://github.com/yaito3014/shiori/releases/latest)から `com.yaito3014.shiori-<version>.tgz`、
+   [このリポジトリの最新リリース](https://github.com/yaito3014/shiori-vrchat/releases/latest)から
+   `com.yaito3014.shiori.vrchat-<version>.tgz` をダウンロードします。
+2. Package Manager の「+」から "Install package from tarball..." で、本体、拡張の順に指定します。
+
+どちらも Unity の署名付きです。
 
 ## 開発
 
