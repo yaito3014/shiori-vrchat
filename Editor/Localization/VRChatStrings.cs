@@ -18,10 +18,12 @@ namespace Shiori.VRChat
             ["step.ok"] = "VCC のパッケージ（{0} 件）は履歴に含めない設定になっています。",
             ["step.apply"] = "除外する",
             ["step.update"] = "更新する",
+            ["step.more"] = "ほか {0} 件",
 
-            ["status.target"] = "ビルドターゲット: {0}",
-            ["save.hint"] = "アップロードの前に保存しておくと、あとでその時点に戻せます。メモの例:「衣装を追加」「表情を調整」",
+            ["status.target"] = "{0} 向け",
+            ["memo.placeholder"] = "例: 衣装を追加、表情を調整、アップロード前",
             ["restore.warning"] = "戻したあと、アセットの読み込み直しに少し時間がかかります。アップロードの途中なら、終わってから戻してください。",
+            ["restore.warning.android"] = "戻したあと、アセットの読み込み直しが始まります。Android 向けのときは数分かかることがあります。アップロードの途中なら、終わってから戻してください。",
         };
 
         public static string Tr(string languageCode, string key)

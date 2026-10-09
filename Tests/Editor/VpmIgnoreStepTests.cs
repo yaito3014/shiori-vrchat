@@ -86,6 +86,14 @@ namespace Shiori.VRChat.Tests
         }
 
         [Test]
+        public void Detail_ListsAtMostFivePackagesThenACount()
+        {
+            Assert.That(_step.Summarize(new[] { "a", "b" }), Is.EqualTo("a\nb"));
+            Assert.That(_step.Summarize(new[] { "a", "b", "c", "d", "e" }), Is.EqualTo("a\nb\nc\nd\ne"));
+            Assert.That(_step.Summarize(new[] { "a", "b", "c", "d", "e", "f", "g" }), Is.EqualTo("a\nb\nc\nd\ne\nほか 2 件"));
+        }
+
+        [Test]
         public void EvaluateAsync_ReturnsTheSameView()
         {
             var view = _step.EvaluateAsync(CancellationToken.None).GetAwaiter().GetResult();

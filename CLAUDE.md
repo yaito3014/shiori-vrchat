@@ -18,7 +18,8 @@
   一覧は評価のたびに作り直すので、パッケージを足すと「更新する」が出る。
   VPM マニフェストが無いプロジェクトでは「VCC で管理していない」と表示して完了扱い。
 - `Editor/Vpm/`: マニフェストの読み取りとブロック内容の組み立て（Unity 非依存）。
-- `Editor/BuildTargetInfo.cs`: ビルドターゲットの表示名（PC / Android / iOS）。かんたんモード上部の 1 行に使う。
+- `Editor/BuildTargetInfo.cs`: ビルドターゲットの表示名（PC / Android / iOS）。ウィンドウ右上のチップ「PC 向け」に使う。
+  戻す前の注意は Android のとき長い版を出す。メモ欄の例文は `GetMemoPlaceholder` で渡す（常設の案内文は出さない）。
 - `Editor/Localization/VRChatStrings.cs`: ja のテーブル。en はキーをそのまま返す（コアと同じ方針）。
 - 文字列の読み書きが必要な JSON はコアの `MiniJson`（public）を使う。別の JSON ライブラリを足さない。
 

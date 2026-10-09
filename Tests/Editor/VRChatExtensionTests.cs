@@ -21,9 +21,11 @@ namespace Shiori.VRChat.Tests
                 Assert.That(steps.Count, Is.EqualTo(1));
                 Assert.That(steps[0], Is.InstanceOf<VpmIgnoreStep>());
 
-                Assert.That(extension.GetStatusLine(context), Does.StartWith("ビルドターゲット: "));
-                Assert.That(extension.GetSaveHint(context), Is.EqualTo(VRChatStrings.Japanese["save.hint"]));
-                Assert.That(extension.GetRestoreWarning(context, null), Is.EqualTo(VRChatStrings.Japanese["restore.warning"]));
+                Assert.That(extension.GetStatusLine(context), Does.EndWith(" 向け"));
+                Assert.That(extension.GetMemoPlaceholder(context), Is.EqualTo(VRChatStrings.Japanese["memo.placeholder"]));
+                Assert.That(extension.GetRestoreWarning(context, null), Is.Not.Empty);
+                Assert.That(VRChatExtension.RestoreWarning("ja", BuildTarget.StandaloneWindows64), Is.EqualTo(VRChatStrings.Japanese["restore.warning"]));
+                Assert.That(VRChatExtension.RestoreWarning("ja", BuildTarget.Android), Is.EqualTo(VRChatStrings.Japanese["restore.warning.android"]));
 
                 // The simple-mode vocabulary stays git-free.
                 foreach (var text in VRChatStrings.Japanese.Values)
@@ -49,7 +51,7 @@ namespace Shiori.VRChat.Tests
         [Test]
         public void Strings_FormatAndFallBack()
         {
-            Assert.That(VRChatStrings.Tr("ja", "status.target", "PC"), Is.EqualTo("ビルドターゲット: PC"));
+            Assert.That(VRChatStrings.Tr("ja", "status.target", "PC"), Is.EqualTo("PC 向け"));
             Assert.That(VRChatStrings.Tr("en", "status.target", "PC"), Is.EqualTo("status.target"));
             Assert.That(VRChatStrings.Tr("ja", "no.such.key"), Is.EqualTo("no.such.key"));
         }

@@ -23,14 +23,21 @@ namespace Shiori.VRChat
             return VRChatStrings.Tr(context.LanguageCode, "status.target", BuildTargetInfo.Label(EditorUserBuildSettings.activeBuildTarget));
         }
 
-        public override string GetSaveHint(IExtensionContext context)
+        public override string GetMemoPlaceholder(IExtensionContext context)
         {
-            return VRChatStrings.Tr(context.LanguageCode, "save.hint");
+            return VRChatStrings.Tr(context.LanguageCode, "memo.placeholder");
         }
 
         public override string GetRestoreWarning(IExtensionContext context, Snapshot target)
         {
-            return VRChatStrings.Tr(context.LanguageCode, "restore.warning");
+            return RestoreWarning(context.LanguageCode, EditorUserBuildSettings.activeBuildTarget);
+        }
+
+        /// <summary>On Android the re-import after 戻す is noticeably longer, so the warning says so.</summary>
+        internal static string RestoreWarning(string languageCode, BuildTarget target)
+        {
+            var key = target == BuildTarget.Android ? "restore.warning.android" : "restore.warning";
+            return VRChatStrings.Tr(languageCode, key);
         }
     }
 }

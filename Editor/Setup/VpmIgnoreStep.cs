@@ -41,7 +41,7 @@ namespace Shiori.VRChat
 
             var wanted = VpmIgnoreBlock.Build(manifest.PackageIds);
             var current = _context.ReadManagedBlock(VpmIgnoreBlock.FileName, VpmIgnoreBlock.BlockId);
-            var detail = string.Join("\n", manifest.PackageIds);
+            var detail = Summarize(manifest.PackageIds);
 
             if (VpmIgnoreBlock.SameLines(current, wanted))
             {
@@ -52,6 +52,18 @@ namespace Shiori.VRChat
             var label = current == null ? Tr("step.apply") : Tr("step.update");
             var actions = new[] { new SetupStepAction(label, () => Apply(wanted)) };
             return new SetupStepView(false, message, detail, actions);
+        }
+
+        /// <summary>Avatar projects lock dozens of packages; the step shows the first few and a count for the rest.</summary>
+        internal const int DetailLines = 5;
+
+        internal string Summarize(IReadOnlyList<string> packageIds)
+        {
+            if (packageIds.Count <= DetailLines) return string.Join("\n", packageIds);
+            var shown = new List<string>(DetailLines + 1);
+            for (var i = 0; i < DetailLines; i++) shown.Add(packageIds[i]);
+            shown.Add(Tr("step.more", packageIds.Count - DetailLines));
+            return string.Join("\n", shown);
         }
 
         private void Apply(IReadOnlyList<string> lines)
