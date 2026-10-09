@@ -1,0 +1,8 @@
+# Dev projects live in ../shiori-dev (see ../shiori/Tools~/New-DevProject.ps1).
+ci-project~/
+
+# IDE / OS
+.vs/
+.idea/
+*.user
+.DS_Store
