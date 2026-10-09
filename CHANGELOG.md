@@ -9,7 +9,7 @@ Each release is described for the people who use it. The developer-level detail 
 
 - **戻す先で VCC のパッケージ構成が変わるときは、戻す前に知らせます。** 増えるもの、なくなるもの、版が変わるものを確認ダイアログに並べます。
 - **パッケージが保存されている構成とずれているあいだは、かんたんモードの上部に知らせが出ます。** 戻したあとや、
-  ほかの PC で取り出した直後などに出ます。VCC / ALCOM でそろえると自然に消えます。
+  別の PC にプロジェクトを持ってきた直後などに出ます。VCC / ALCOM でそろえると自然に消えます。
 
 ### English
 
