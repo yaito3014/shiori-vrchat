@@ -5,52 +5,74 @@
 特に: Unity 2022.3 以上、C# 9 / .NET Standard 2.1、obsolete API はコンパイルエラー、UI は UI Toolkit、
 表示文字列はローカライズテーブルから引く、かんたんモードの語彙は 保存 / 履歴 / 戻す / バリエーション / 同期。
 
-まだ骨組みだけで、コードはない。実装は、コア側の拡張 API（下記）が入ってから始める。
+## 仕組み
 
-## このパッケージに置くもの
+コアの拡張 API（`Shiori.Core` の `ShioriExtension` / `SetupStep` / `IExtensionContext`、
+`shiori/docs/adr/0002-extension-api-in-core.md`）に乗る。このパッケージは UI を持たない。
+`VRChatExtension` が文言とボタンを返し、描画はコアが行う。
 
-- VPM 向けの無視設定: VCC が管理する `Packages/` 配下のパッケージを除外し、
-  `Packages/vpm-manifest.json` と `Packages/manifest.json` は追跡する。
-  除外する一覧は固定ではなく、ウィザード実行時に `vpm-manifest.json` から作る。
-  `.gitignore` には独自のマーカー付きブロック（`# >>> shiori-vrchat ... >>>`）として追記する。
-- ウィザードの追加ステップ「VRChat の設定」（無視ファイルの後、最初の保存の前）。
-- ビルドターゲット（PC / Android）の表示と、戻す前の再インポート警告。
-- 作る人向けの文言（メモの候補、アップロード前の保存の案内）。
-- 大きなファイル（FBX、テクスチャ）の LFS 案内。LFS を必須にするかは未決定。
+- `Editor/VRChatExtension.cs`: `ShioriExtension` の実装。コアが `TypeCache` で見つける。
+- `Editor/Setup/VpmIgnoreStep.cs`: ウィザードの手順「VRChat の設定」。
+  `Packages/vpm-manifest.json` の `locked`（無ければ `dependencies`）からパッケージ名を読み、
+  `.gitignore` の `shiori-vrchat` ブロックに `Packages/<id>/` を 1 行ずつ書く。
+  一覧は評価のたびに作り直すので、パッケージを足すと「更新する」が出る。
+  VPM マニフェストが無いプロジェクトでは「VCC で管理していない」と表示して完了扱い。
+- `Editor/Vpm/`: マニフェストの読み取りとブロック内容の組み立て（Unity 非依存）。
+- `Editor/BuildTargetInfo.cs`: ビルドターゲットの表示名（PC / Android / iOS）。かんたんモード上部の 1 行に使う。
+- `Editor/Localization/VRChatStrings.cs`: ja のテーブル。en はキーをそのまま返す（コアと同じ方針）。
+- 文字列の読み書きが必要な JSON はコアの `MiniJson`（public）を使う。別の JSON ライブラリを足さない。
 
-## コア側に必要な拡張 API（コアのリポジトリで実装する）
+## 守ること
 
-- `ManagedBlockWriter` のブロック ID 指定（複数ブロックの共存）。
-- `Shiori.Editor` の拡張ポイント: 追加ウィザードステップ、追加の無視プリセット、
-  保存 / 戻す の前後フック、追加のローカライズテーブル。`TypeCache` で探索し、拡張ゼロでも動く。
-- `ProjectSettings/Shiori.json` にパッケージ ID をキーにした拡張用セクション。
+- **VRChat SDK のアセンブリを参照しない。** `vpmDependencies` に `com.vrchat.base` はあるが、
+  コードは Unity 標準 API とコアだけで動く。検証プロジェクトにも SDK は入れない。
+- ユーザーのプロジェクトに書くのは `IExtensionContext` 経由の `.gitignore` ブロックと
+  `ProjectSettings/Shiori.json` の自分の節だけ。直接 `File.Write` しない。
+- `Shiori.Core` / `Shiori.Editor` の internal には触らない（`InternalsVisibleTo` を頼まない）。
+- アセンブリは `Shiori.VRChat.Editor` と `Shiori.VRChat.Editor.Tests` のみ。
+
+## ビルドと検証
+
+検証用プロジェクトはコアと共用（`../shiori-dev/<stream>`）。コアの `New-DevProject.ps1` で作ったあと、
+このリポジトリの `Tools~/Add-ToDevProject.ps1` で `file:` 参照と `testables` を足す。
+
+```
+pwsh Tools~/Add-ToDevProject.ps1 -Stream 2022.3          # 初回だけ（2022.3-batch / 6000.6 も同様）
+pwsh ../shiori/Tools~/Test-DevProject.ps1 -UnityVersion 2022.3.22f1 -ProjectPath ../shiori-dev/2022.3-batch
+pwsh ../shiori/Tools~/Test-DevProject.ps1 -UnityVersion 6000.6.0f1
+```
+
+テストはコアと一緒に走る（結果の総数にはコアの分も含まれる）。
+コミット前にインストール済み全バージョンで通すのはコアと同じ。
+`.meta` は Unity が生成したものをコミットする（配布物は埋め込みコピーになるため必要）。
 
 ## 依存関係と配布
 
-- `vpmDependencies`: `com.yaito3014.shiori` と `com.vrchat.base`。
+- `vpmDependencies`: `com.yaito3014.shiori` と `com.vrchat.base`。UPM の `dependencies` には書かない
+  （どちらもレジストリに無いので UPM が解決できない）。
 - 配布は VPM リスティング（GitHub Pages の `index.json`）。コアも同じリスティングに載せる。
-  公開手順は未決定（コアの CLAUDE.md の「まだ決まっていないこと」参照）。
-- アセンブリは `Shiori.VRChat.Editor` のみ。`Shiori.Core` に相当するものは作らない。
+  公開手順は未決定。
+- CI はまだ無い。コアのリポジトリを取得して一緒にプロジェクトへ埋め込む形になる見込み。
 
-## リポジトリ構成（予定）
+## リポジトリ構成
 
 ```
 shiori-vrchat/
   package.json
-  README.md
-  CHANGELOG.md
-  LICENSE                   # MIT
+  README.md / CHANGELOG.md / LICENSE（MIT）
   Editor/
-    Shiori.VRChat.Editor.asmdef + csc.rsp（-warnaserror+:CS0618）
-    Localization/
+    Shiori.VRChat.Editor.asmdef + csc.rsp
+    VRChatExtension.cs / BuildTargetInfo.cs
+    Setup/ Vpm/ Localization/
   Tests/Editor/
-    Shiori.VRChat.Editor.Tests.asmdef
-  docs/adr/
+    Shiori.VRChat.Editor.Tests.asmdef + csc.rsp
+    Fakes/FakeExtensionContext.cs       # IExtensionContext のメモリ実装。Unity なしで手順をテストする
+  Tools~/Add-ToDevProject.ps1
 ```
 
 ## まだ決まっていないこと（勝手に決めない）
 
-- 拡張 API の形（コアの M1.5 として着手するか、M2 の後にするか）
-- LFS を必須にするか推奨に留めるか
-- VPM リスティングの公開手順
-- Android ターゲット向けに何を表示するか
+- LFS を必須にするか推奨に留めるか（今は何も出さない。コアと同じく検出と案内のみ）
+- VPM リスティングの公開手順と CI の形
+- Android ターゲット向けに名前以外に何を表示するか
+- `com.vrchat.base` の要求バージョン範囲（今は `>=3.5.0`）
