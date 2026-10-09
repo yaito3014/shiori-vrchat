@@ -44,6 +44,8 @@ pwsh ../shiori/Tools~/Test-DevProject.ps1 -UnityVersion 6000.6.0f1
 
 テストはコアと一緒に走る（結果の総数にはコアの分も含まれる）。
 コミット前にインストール済み全バージョンで通すのはコアと同じ。
+コミットごとに `../dist/com.yaito3014.shiori.vrchat-<version>.unitypackage` を post-commit フックで出す。
+フックはコアのスクリプトを呼ぶので、クローン直後は `pwsh ../shiori/Tools~/Install-Hooks.ps1 -PackageRoot .` で入れる。
 `.meta` は Unity が生成したものをコミットする（配布物は埋め込みコピーになるため必要）。
 
 ## 依存関係と配布
