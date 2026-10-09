@@ -23,7 +23,16 @@ namespace Shiori.VRChat
             ["status.target"] = "{0} 向け",
             ["memo.placeholder"] = "例: 衣装を追加、表情を調整、アップロード前",
             ["restore.warning"] = "戻したあと、アセットの読み込み直しに少し時間がかかります。アップロードの途中なら、終わってから戻してください。",
-            ["restore.warning.android"] = "戻したあと、アセットの読み込み直しが始まります。Android 向けのときは数分かかることがあります。アップロードの途中なら、終わってから戻してください。",
+            ["packages.restore"] = "VCC のパッケージ構成も戻ります（追加 {0} / 削除 {1} / 版の変更 {2}）。戻したあと、パッケージをそろえるまでエラーが出ることがあります。",
+            ["packages.added"] = "増えるもの:",
+            ["packages.removed"] = "なくなるもの:",
+            ["packages.changed"] = "版が変わるもの:",
+            ["packages.title"] = "パッケージをそろえてください",
+            ["packages.notice"] = "パッケージ {0} 件が、保存されている構成（vpm-manifest.json）と違います。VCC / ALCOM でこのプロジェクトのパッケージを確認し、そろえてください。Unity にパッケージを解決するボタンが出たときは、それを押してもかまいません。",
+            ["packages.missing"] = "{0}: {1} が必要です（入っていません）",
+            ["packages.version"] = "{0}: {1} が必要です（今は {2}）",
+
+            ["restore.warning.android"] ="戻したあと、アセットの読み込み直しが始まります。Android 向けのときは数分かかることがあります。アップロードの途中なら、終わってから戻してください。",
         };
 
         public static string Tr(string languageCode, string key)

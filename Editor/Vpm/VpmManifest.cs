@@ -19,9 +19,16 @@ namespace Shiori.VRChat
         /// <summary>Package names, sorted, without duplicates.</summary>
         public IReadOnlyList<string> PackageIds { get; }
 
-        private VpmManifest(IReadOnlyList<string> packageIds)
+        /// <summary>
+        /// Exact versions from the <c>locked</c> section, by package name. Empty for a manifest that has
+        /// not been resolved yet (only <c>dependencies</c>, which hold ranges rather than versions).
+        /// </summary>
+        public IReadOnlyDictionary<string, string> LockedVersions { get; }
+
+        private VpmManifest(IReadOnlyList<string> packageIds, IReadOnlyDictionary<string, string> lockedVersions)
         {
             PackageIds = packageIds;
+            LockedVersions = lockedVersions;
         }
 
         public static string PathIn(string projectRoot)
@@ -51,7 +58,20 @@ namespace Shiori.VRChat
             var ids = new SortedSet<string>(StringComparer.Ordinal);
             AddKeys(ids, root, "locked");
             if (ids.Count == 0) AddKeys(ids, root, "dependencies");
-            return new VpmManifest(new List<string>(ids));
+
+            var versions = new SortedDictionary<string, string>(StringComparer.Ordinal);
+            if (root.TryGetValue("locked", out var locked) && locked is Dictionary<string, object> entries)
+            {
+                foreach (var pair in entries)
+                {
+                    if (!IsPackageName(pair.Key)) continue;
+                    if (pair.Value is Dictionary<string, object> entry && entry.TryGetValue("version", out var version) && version is string text && text.Length > 0)
+                    {
+                        versions[pair.Key] = text;
+                    }
+                }
+            }
+            return new VpmManifest(new List<string>(ids), versions);
         }
 
         private static void AddKeys(SortedSet<string> ids, Dictionary<string, object> root, string section)
