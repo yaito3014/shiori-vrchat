@@ -53,9 +53,13 @@ pwsh ../shiori/Tools~/Test-DevProject.ps1 -UnityVersion 6000.6.0f1
 
 - `vpmDependencies`: `com.yaito3014.shiori` と `com.vrchat.base`。UPM の `dependencies` には書かない
   （どちらもレジストリに無いので UPM が解決できない）。
-- 配布は VPM リスティング（GitHub Pages の `index.json`）。コアも同じリスティングに載せる。
-  公開手順は未決定。
-- CI はまだ無い。コアのリポジトリを取得して一緒にプロジェクトへ埋め込む形になる見込み。
+- 配布は VPM リスティング（`../vpm-listing`、GitHub Pages の `index.json`）。コアも同じリスティングに載せる。
+  `vX.Y.Z` タグ（`package.json` の version と一致）を push すると `.github/workflows/release.yml` が
+  `git archive` の zip を GitHub Release に添付する。`Tools~` / `.github` / dotfiles は `.gitattributes` の
+  `export-ignore` で zip から外す。
+- CI（`.github/workflows/ci.yml`）はコアを `core~/` に checkout し、コアの `New-DevProject.ps1 -Embed` と
+  このリポジトリの `Add-ToDevProject.ps1 -Embed` で両パッケージを埋め込んだプロジェクトを `ci-project~/` に作る。
+  コアの参照は変数 `SHIORI_REF`（既定 main）。Secrets はコアと同じ `UNITY_LICENSE` / `UNITY_EMAIL` / `UNITY_PASSWORD`。
 
 ## リポジトリ構成
 

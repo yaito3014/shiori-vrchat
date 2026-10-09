@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  editmode-tests:
+    name: EditMode (${{ matrix.unity }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        unity: [2022.3.22f1, 6000.6.0f1]
+    env:
+      # Same layout as the core's CI: the project lives in a folder Unity ignores (trailing ~) and
+      # both packages are embedded copies, never file: references. The core is checked out next to
+      # it, also in a ~ folder so Unity never sees it as part of this package.
+      PROJECT: ci-project~/${{ matrix.unity }}
+      CORE: core~
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out the core package
+        uses: actions/checkout@v4
+        with:
+          repository: yaito3014/shiori
+          # Set the repository variable SHIORI_REF to pin a tag or branch of the core; default main.
+          ref: ${{ vars.SHIORI_REF || 'main' }}
+          path: core~
+
+      - name: Create the dev project with both packages embedded
+        shell: pwsh
+        run: |
+          & "./$env:CORE/Tools~/New-DevProject.ps1" -UnityVersion ${{ matrix.unity }} -Destination $env:PROJECT -Embed
+          ./Tools~/Add-ToDevProject.ps1 -ProjectPath $env:PROJECT -Embed
+          Get-Content (Join-Path $env:PROJECT "Packages/manifest.json")
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.PROJECT }}/Library
+          key: Library-${{ matrix.unity }}-${{ hashFiles('**/*.asmdef', 'package.json', 'core~/package.json') }}
+          restore-keys: |
+            Library-${{ matrix.unity }}-
+
+      - name: Run EditMode tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ${{ env.PROJECT }}
+          unityVersion: ${{ matrix.unity }}
+          customImage: unityci/editor:ubuntu-${{ matrix.unity }}-base-3
+          testMode: EditMode
+          artifactsPath: test-results-${{ matrix.unity }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: EditMode results (${{ matrix.unity }})
+
+      - name: Check Shiori.VRChat.Editor does not reference the VRChat SDK
+        run: |
+          dll="$PROJECT/Library/ScriptAssemblies/Shiori.VRChat.Editor.dll"
+          test -f "$dll" || { echo "missing $dll"; exit 1; }
+          if grep -a -q -E 'VRC\.SDK|VRCSDK|VRC\.Core|VRC\.Udon' "$dll"; then
+            echo "Shiori.VRChat.Editor.dll references VRChat SDK assemblies"; exit 1
+          fi
+          echo "OK: Shiori.VRChat.Editor.dll has no VRChat SDK references"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.unity }}
+          path: test-results-${{ matrix.unity }}
