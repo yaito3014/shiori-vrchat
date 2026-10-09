@@ -8,7 +8,7 @@
 ## 仕組み
 
 コアの拡張 API（`Shiori.Core` の `ShioriExtension` / `SetupStep` / `IExtensionContext`、
-`shiori/docs/adr/0002-extension-api-in-core.md`）に乗る。このパッケージは UI を持たない。
+`shiori/docs~/adr/0002-extension-api-in-core.md`）に乗る。このパッケージは UI を持たない。
 `VRChatExtension` が文言とボタンを返し、描画はコアが行う。
 
 - `Editor/VRChatExtension.cs`: `ShioriExtension` の実装。コアが `TypeCache` で見つける。
