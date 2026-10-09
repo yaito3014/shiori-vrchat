@@ -3,7 +3,7 @@
 `com.yaito3014.shiori` の上に載せる VRChat 向け拡張パッケージ `com.yaito3014.shiori.vrchat`。
 コアパッケージ（`../shiori`、github.com/yaito3014/shiori）の `CLAUDE.md` のルールはすべてここにも適用する。
 特に: Unity 2022.3 以上、C# 9 / .NET Standard 2.1、obsolete API はコンパイルエラー、UI は UI Toolkit、
-表示文字列はローカライズテーブルから引く、かんたんモードの語彙は 保存 / 履歴 / 戻す / バリエーション / 同期。
+表示文字列はローカライズテーブルから引く、かんたんモードの語彙は 保存 / 履歴 / 戻す / バリエーション / 送信 / 受信。
 
 ## 仕組み
 
