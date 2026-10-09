@@ -51,8 +51,11 @@ pwsh ../shiori/Tools~/Test-DevProject.ps1 -UnityVersion 6000.6.0f1
 
 ## 依存関係と配布
 
-- `vpmDependencies`: `com.yaito3014.shiori` と `com.vrchat.base`。UPM の `dependencies` には書かない
-  （どちらもレジストリに無いので UPM が解決できない）。
+- `vpmDependencies`: `com.yaito3014.shiori`（`^0.2.0`）と `com.vrchat.base`。
+  UPM の `dependencies` には本体だけを書く（0.2.0 から）。yaito3014 のスコープ付きレジストリから入れたとき、
+  Package Manager が本体も一緒に入れるため。VCC では本体が埋め込みパッケージとして入るので、それで満たされる。
+  `com.vrchat.base` は Unity のレジストリに無いので `dependencies` には書かない。
+  コアの新しい API を使うときは、両方の版の指定を上げる。
 - 配布は VPM リスティング（`../vpm-listing`、GitHub Pages の `index.json`）。コアも同じリスティングに載せる。
   `vX.Y.Z` タグ（`package.json` の version と一致）を push すると `.github/workflows/release.yml` が
   `git archive` の zip を GitHub Release に添付する。配布物は `Editor/`、`package.json`、`LICENSE` だけ:

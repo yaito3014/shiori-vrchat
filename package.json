@@ -1,6 +1,6 @@
 {
   "name": "com.yaito3014.shiori.vrchat",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "displayName": "Shiori for VRChat",
   "description": "VRChat additions for Shiori: ignore VCC-managed packages, show the build target, warn before restoring, and speak to avatar and world creators.",
   "unity": "2022.3",
@@ -18,8 +18,11 @@
     "vrchat",
     "vpm"
   ],
+  "dependencies": {
+    "com.yaito3014.shiori": "0.2.0"
+  },
   "vpmDependencies": {
-    "com.yaito3014.shiori": "^0.1.0",
+    "com.yaito3014.shiori": "^0.2.0",
     "com.vrchat.base": ">=3.5.0"
   },
   "samples": []

@@ -3,19 +3,21 @@
 リリースごとに、使う人向けの言葉で書いています。開発者向けの詳細は各リリースの GitHub Releases にあります。
 Each release is described for the people who use it. The developer-level detail is in the GitHub release notes.
 
-## [Unreleased]
+## [0.2.0] - 2026-10-10
 
 ### 日本語
 
 - **戻す先で VCC のパッケージ構成が変わるときは、戻す前に知らせます。** 増えるもの、なくなるもの、版が変わるものを確認ダイアログに並べます。
 - **パッケージが保存されている構成とずれているあいだは、かんたんモードの上部に知らせが出ます。** 戻したあとや、
   別の PC にプロジェクトを持ってきた直後などに出ます。VCC / ALCOM でそろえると自然に消えます。
+- Shiori 本体 0.2.0 以上が必要になりました。Package Manager から入れたときも、本体が一緒に入ります。
 
 ### English
 
 - **戻す warns when the VCC package set differs in the target**, listing added, removed and re-versioned packages.
 - **While the packages in `Packages/` differ from `vpm-manifest.json`, simple mode shows a notice** (for example after
   戻す or on a fresh copy). It disappears once VCC / ALCOM has resolved the packages.
+- Requires Shiori 0.2.0 or later, now also declared as a regular dependency so the Package Manager installs it.
 
 ## [0.1.1] - 2026-10-09
 

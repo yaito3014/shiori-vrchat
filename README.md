@@ -41,7 +41,7 @@ Shiori 本体は依存関係として一緒に入ります。
 | URL | `https://yaito3014.github.io/vpm-listing` |
 | Scope(s) | `com.yaito3014` |
 
-「My Registries」から **Shiori** と **Shiori for VRChat** の両方を入れてください（0.1.1 では本体が自動では入りません）。
+「My Registries」から **Shiori for VRChat** を入れると、Shiori 本体も一緒に入ります。
 
 登録したくない場合は tarball から入れます。Package Manager は依存関係を自動では入れないので、本体を先に入れます。
 
