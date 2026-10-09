@@ -46,7 +46,10 @@ jobs:
           ./Tools~/Add-ToDevProject.ps1 -ProjectPath $env:PROJECT -Embed
           Get-Content (Join-Path $env:PROJECT "Packages/manifest.json")
 
+      # Unity 6 is killed (exit 137) right after start-up when it opens a Library restored from this
+      # cache, so only 2022.3 uses it. The cached Library is small (a few MB) and saves little anyway.
       - uses: actions/cache@v4
+        if: ${{ !startsWith(matrix.unity, '6000.') }}
         with:
           path: ${{ env.PROJECT }}/Library
           key: Library-${{ matrix.unity }}-${{ hashFiles('**/*.asmdef', 'package.json', 'core~/package.json') }}
