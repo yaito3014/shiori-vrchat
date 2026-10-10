@@ -3,6 +3,16 @@
 リリースごとに、使う人向けの言葉で書いています。開発者向けの詳細は各リリースの GitHub Releases にあります。
 Each release is described for the people who use it. The developer-level detail is in the GitHub release notes.
 
+## [0.3.0] - 2026-10-10
+
+### 日本語
+
+- Shiori 本体 0.3.0 に合わせました。受信と、詳細モードでの操作が使えます。このパッケージ自体の動作は変わりません。
+
+### English
+
+- Follows Shiori 0.3.0, which adds 受信 (receive) and actions in detail mode. No change in this package's behaviour.
+
 ## [0.2.0] - 2026-10-10
 
 ### 日本語
