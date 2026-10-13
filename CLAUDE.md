@@ -46,7 +46,7 @@ pwsh ../shiori/Tools~/Test-DevProject.ps1 -UnityVersion 6000.6.0f1
 テストはコアと一緒に走る（結果の総数にはコアの分も含まれる）。
 コミット前にインストール済み全バージョンで通すのはコアと同じ。
 `.unitypackage` では配布しない（Unity 6 で署名なしの警告が出るため）。署名済み `.tgz` は
-`pwsh ../shiori/Tools~/Sign-Package.ps1 -PackageRoot . -Username <email> -Organization 15668133757639` で作る。
+ワークスペースの `pwsh ./Sign-Package.ps1 shiori-vrchat -Username <email> -Organization 15668133757639` で作る。
 `.meta` は Unity が生成したものをコミットする（配布物は埋め込みコピーになるため必要）。
 
 ## 依存関係と配布
