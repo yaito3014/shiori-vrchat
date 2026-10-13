@@ -3,6 +3,18 @@
 リリースごとに、使う人向けの言葉で書いています。開発者向けの詳細は各リリースの GitHub Releases にあります。
 Each release is described for the people who use it. The developer-level detail is in the GitHub release notes.
 
+## [0.4.0] - 2026-10-13
+
+### 日本語
+
+- Shiori 本体 0.4.0 に合わせました。詳細モードでプレハブとマテリアルの変更を Unity の言葉で見られるようになり、
+  ファイルごとにステージできるようになりました。このパッケージ自体の動作は変わりません。
+
+### English
+
+- Follows Shiori 0.4.0, which shows prefab and material changes in Unity terms and adds staging in detail mode.
+  No change in this package's behaviour.
+
 ## [0.3.0] - 2026-10-10
 
 ### 日本語
