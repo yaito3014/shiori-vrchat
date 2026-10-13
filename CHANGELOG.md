@@ -3,19 +3,19 @@
 リリースごとに、使う人向けの言葉で書いています。開発者向けの詳細は各リリースの GitHub Releases にあります。
 Each release is described for the people who use it. The developer-level detail is in the GitHub release notes.
 
-## [Unreleased]
+## [0.5.0] - 2026-10-14
 
 ### 日本語
 
 - **バリエーションを切り替える前にも注意を出します。** 切り替え先で VCC のパッケージ構成が違うときは、増えるもの・なくなるもの・
   版が変わるものを並べます。Android 向けのときは読み込み直しに時間がかかることも知らせます。
-- Shiori 本体の次の版（バリエーション）が必要になります。
+- Shiori 本体 0.5.0（バリエーション）が必要になります。
 
 ### English
 
 - **Switching バリエーション warns too**: package-set differences in the target variation are listed, and Android
   projects are told the re-import takes longer.
-- Requires the next Shiori release (variations).
+- Requires Shiori 0.5.0 (variations).
 
 ## [0.4.0] - 2026-10-13
 
