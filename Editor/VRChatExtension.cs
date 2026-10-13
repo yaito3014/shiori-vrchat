@@ -39,14 +39,27 @@ namespace Shiori.VRChat
         }
 
         /// <summary>The re-import warning, plus the package-set change when vpm-manifest.json differs in the target.</summary>
-        public override async Task<string> GetRestoreWarningAsync(IExtensionContext context, RestorePreview preview, CancellationToken cancellationToken)
+        public override Task<string> GetRestoreWarningAsync(IExtensionContext context, RestorePreview preview, CancellationToken cancellationToken)
         {
             var reimport = RestoreWarning(context.LanguageCode, EditorUserBuildSettings.activeBuildTarget);
-            if (preview == null || context.Repository == null || !preview.Changes(VpmManifest.RelativePath)) return reimport;
+            return WithPackagesAsync(context, preview, reimport, VpmMessages.RestoreWarning, cancellationToken);
+        }
+
+        /// <summary>The same for switching バリエーション: the package-set change, and the upload / Android advice.</summary>
+        public override Task<string> GetSwitchWarningAsync(IExtensionContext context, RestorePreview preview, CancellationToken cancellationToken)
+        {
+            var advice = SwitchWarning(context.LanguageCode, EditorUserBuildSettings.activeBuildTarget);
+            return WithPackagesAsync(context, preview, advice, VpmMessages.SwitchWarning, cancellationToken);
+        }
+
+        private static async Task<string> WithPackagesAsync(IExtensionContext context, RestorePreview preview, string advice,
+            Func<string, VpmManifestDiff, string> describePackages, CancellationToken cancellationToken)
+        {
+            if (preview == null || context.Repository == null || !preview.Changes(VpmManifest.RelativePath)) return advice;
 
             var targetJson = await context.Repository.ReadFileAtAsync(preview.Target.Hash, VpmManifest.RelativePath, cancellationToken);
-            var packages = VpmMessages.RestoreWarning(context.LanguageCode, VpmManifestDiff.Compare(LoadOrNull(context.ProjectRoot), ParseOrNull(targetJson)));
-            return packages == null ? reimport : packages + "\n\n" + reimport;
+            var packages = describePackages(context.LanguageCode, VpmManifestDiff.Compare(LoadOrNull(context.ProjectRoot), ParseOrNull(targetJson)));
+            return packages == null ? advice : packages + "\n\n" + advice;
         }
 
         /// <summary>While Packages/ does not match the locked versions, ask the user to resolve them.</summary>
@@ -87,6 +100,13 @@ namespace Shiori.VRChat
         internal static string RestoreWarning(string languageCode, BuildTarget target)
         {
             var key = target == BuildTarget.Android ? "restore.warning.android" : "restore.warning";
+            return VRChatStrings.Tr(languageCode, key);
+        }
+
+        /// <summary>The core already says files are re-imported; this adds the upload and Android advice.</summary>
+        internal static string SwitchWarning(string languageCode, BuildTarget target)
+        {
+            var key = target == BuildTarget.Android ? "switch.warning.android" : "switch.warning";
             return VRChatStrings.Tr(languageCode, key);
         }
     }

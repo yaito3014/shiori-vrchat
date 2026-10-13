@@ -15,9 +15,20 @@ namespace Shiori.VRChat
         /// <summary>The 戻す warning about the package set, or null when the set does not change.</summary>
         public static string RestoreWarning(string languageCode, VpmManifestDiff diff)
         {
+            return PackageWarning(languageCode, diff, "packages.restore");
+        }
+
+        /// <summary>The バリエーション switch warning about the package set, or null when the set does not change.</summary>
+        public static string SwitchWarning(string languageCode, VpmManifestDiff diff)
+        {
+            return PackageWarning(languageCode, diff, "packages.switch");
+        }
+
+        private static string PackageWarning(string languageCode, VpmManifestDiff diff, string headlineKey)
+        {
             if (diff == null || diff.IsEmpty) return null;
             var sb = new StringBuilder();
-            sb.Append(VRChatStrings.Tr(languageCode, "packages.restore", diff.Added.Count, diff.Removed.Count, diff.Changed.Count));
+            sb.Append(VRChatStrings.Tr(languageCode, headlineKey, diff.Added.Count, diff.Removed.Count, diff.Changed.Count));
             AppendList(sb, languageCode, "packages.added", diff.Added);
             AppendList(sb, languageCode, "packages.removed", diff.Removed);
             AppendList(sb, languageCode, "packages.changed", diff.Changed);

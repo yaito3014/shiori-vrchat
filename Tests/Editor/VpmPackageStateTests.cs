@@ -71,6 +71,30 @@ namespace Shiori.VRChat.Tests
         }
 
         [Test]
+        public void SwitchWarning_UsesTheSwitchWording()
+        {
+            var diff = VpmManifestDiff.Compare(VpmManifest.Parse(Manifest), VpmManifest.Parse(@"{ ""locked"": { ""com.vrchat.base"": { ""version"": ""3.7.4"" } } }"));
+            var text = VpmMessages.SwitchWarning("ja", diff);
+            Assert.That(text, Does.StartWith(string.Format(VRChatStrings.Japanese["packages.switch"], 0, 2, 0)));
+            Assert.That(text, Does.Contain("・com.anatawa12.avatar-optimizer"));
+            Assert.That(VpmMessages.SwitchWarning("ja", VpmManifestDiff.Compare(null, null)), Is.Null);
+        }
+
+        [Test]
+        public void Extension_SwitchWarningWithoutRepository_IsTheAdvice()
+        {
+            using (var context = new FakeExtensionContext())
+            {
+                var snapshot = new Snapshot("abc", System.DateTimeOffset.Now, "first", "me", null);
+                var preview = new RestorePreview(snapshot, new[] { VpmManifest.RelativePath });
+                var text = new VRChatExtension().GetSwitchWarningAsync(context, preview, CancellationToken.None).GetAwaiter().GetResult();
+                Assert.That(text, Does.Contain("切り替えてください"));
+                Assert.That(text, Does.Not.Contain("戻"), "nothing in the switch warning talks about going back");
+                Assert.That(VRChatExtension.SwitchWarning("ja", UnityEditor.BuildTarget.Android), Is.EqualTo(VRChatStrings.Japanese["switch.warning.android"]));
+            }
+        }
+
+        [Test]
         public void Notice_AppearsOnlyWhileSomethingDiffers()
         {
             Assert.That(VpmMessages.OutOfDateNotice("ja", new VpmMismatch[0]), Is.Null);

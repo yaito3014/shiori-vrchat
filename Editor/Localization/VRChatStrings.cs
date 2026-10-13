@@ -33,6 +33,10 @@ namespace Shiori.VRChat
             ["packages.version"] = "{0}: {1} が必要です（今は {2}）",
 
             ["restore.warning.android"] ="戻したあと、アセットの読み込み直しが始まります。Android 向けのときは数分かかることがあります。アップロードの途中なら、終わってから戻してください。",
+
+            ["switch.warning"] = "アップロードの途中なら、終わってから切り替えてください。",
+            ["switch.warning.android"] = "Android 向けのときは、読み込み直しに数分かかることがあります。アップロードの途中なら、終わってから切り替えてください。",
+            ["packages.switch"] = "切り替え先では VCC のパッケージ構成が違います（追加 {0} / 削除 {1} / 版の変更 {2}）。切り替えたあと、パッケージをそろえるまでエラーが出ることがあります。",
         };
 
         public static string Tr(string languageCode, string key)
