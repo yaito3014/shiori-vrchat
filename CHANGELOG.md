@@ -3,6 +3,18 @@
 リリースごとに、使う人向けの言葉で書いています。開発者向けの詳細は各リリースの GitHub Releases にあります。
 Each release is described for the people who use it. The developer-level detail is in the GitHub release notes.
 
+## [0.6.0] - 2026-10-15
+
+### 日本語
+
+- 「VRChat の設定」の説明が、今どうなっているかと、「除外する」「更新する」を押すとどう変わるかの両方を書くようになりました。
+- Shiori 本体は 0.5.0 以上で動きます。0.6.0（受信で合わせる、大きなファイルの設定）と一緒に使うのがおすすめです。
+
+### English
+
+- The 「VRChat の設定」 step now says both what is set now and what 除外する / 更新する would change.
+- Works with Shiori 0.5.0 or later; 0.6.0 (merging on 受信, Git LFS) is recommended.
+
 ## [0.5.0] - 2026-10-14
 
 ### 日本語
