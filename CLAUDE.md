@@ -51,7 +51,7 @@ pwsh ../shiori/Tools~/Test-DevProject.ps1 -UnityVersion 6000.6.0f1
 
 ## 依存関係と配布
 
-- `vpmDependencies`: `com.yaito3014.shiori`（`^0.2.0`）と `com.vrchat.base`。
+- `vpmDependencies`: `com.yaito3014.shiori`（`^0.5.0`）と `com.vrchat.base`。
   UPM の `dependencies` には本体だけを書く（0.2.0 から）。yaito3014 のスコープ付きレジストリから入れたとき、
   Package Manager が本体も一緒に入れるため。VCC では本体が埋め込みパッケージとして入るので、それで満たされる。
   `com.vrchat.base` は Unity のレジストリに無いので `dependencies` には書かない。
@@ -84,6 +84,5 @@ shiori-vrchat/
 ## まだ決まっていないこと（勝手に決めない）
 
 - VRChat 向けに LFS の対象を足すか（コアは推奨の手順「大きなファイルの設定」で画像・モデル・音などを LFS にする。コアの ADR 0008）
-- VPM リスティングの公開手順と CI の形
 - Android ターゲット向けに名前以外に何を表示するか
 - `com.vrchat.base` の要求バージョン範囲（今は `>=3.5.0`）
